@@ -5,10 +5,13 @@
 # echo "<url>file://"$1"</url>"
 TARGETFILE="*.opf"
 declare -u FILEEXT
-FILEEXT=${1##*.}
+FILEEXT="${1##*.}"
 # declare -u FILEEXT
 # FILEEXT=$FILEEXT
-EPUBFILE="$(echo "$1"|sed 's/%20/ /g'|sed 's|file:\/\/||')"
+# EPUBFILE="$(echo "$1"|sed 's/%20/ /g'|sed 's|file:\/\/||')"
+# EPUBFILE="$(echo -e $(echo "$1"|sed -e 's/%/\\x/g' -e 's|file:\/\/||'))"
+#forma más sencilla de cambiar el uri a un path normal. Todavía uso sed para el file://, pero es uno solo y un solo echo.
+EPUBFILE="$(echo -e "${1//%/\\x}"|sed 's|file:\/\/||')"
 if [ $FILEEXT = "PDF" ]
   then
   TEXT="$(pdfinfo $EPUBFILE)"
