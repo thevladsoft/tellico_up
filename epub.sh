@@ -140,7 +140,7 @@ echo $DATE
 echo "<carpe>"$(dirname $1)"</carpe>"
 echo "</entry>"
 echo "<images/></collection></tellico>"
-echo $FILEEXT $EPUBFILE $AUTOR>> /home/vlad/mis_programas/tellico_up/salida
+# echo $FILEEXT $EPUBFILE $AUTOR>> /home/vlad/mis_programas/tellico_up/salida
 # if [ "${FILEEXT^^}" = "EPUB" ];
 #   then
 #   echo "o"
