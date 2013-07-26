@@ -63,6 +63,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>
   </fields>'
 echo "<entry id=\"0\">"
 # echo "<entry>"
+#-----------Leo el titulo
 TAG="title"
 TELLTAG="title"
 if [ $FILEEXT = "EPUB" ]
@@ -73,8 +74,10 @@ elif [ $FILEEXT = "PDF" ]
   TITLE="<"$TELLTAG">"$(echo "$TEXT"|grep  "Title:"|sed "s/Title:[ ]*//")"</"$TELLTAG">"
 fi
 echo $TITLE
+#-----------Leo la URL
 echo "<url>"$1"</url>"
 # # echo " "
+#-----------Leo el genero
 TAG="subject"
 TELLTAG="género"
 if [ $FILEEXT = "EPUB" ]
@@ -86,6 +89,7 @@ elif [ $FILEEXT = "PDF" ]
 fi
 echo $SUBJECT
 # # echo " "
+#-----------Leo el autor
 TAG="creator"
 TELLTAG="autor"
 if [ $FILEEXT = "EPUB" ]
@@ -97,6 +101,7 @@ elif [ $FILEEXT = "PDF" ]
 fi
 echo $AUTOR
 # echo " "
+#-----------Leo una descripcion en los EPUB
 TAG="description"
 TELLTAG="notas"
 if [ $FILEEXT = "EPUB" ]
@@ -109,6 +114,7 @@ if [ $FILEEXT = "EPUB" ]
 fi
 echo $NOTAS
 # # echo " "
+#-----------Leo la fecha de en que fue hecho el documento. No deberia ser la de creacion del archivo, pero para muchos PDF lo es.
 TAG="date"
 TELLTAG="created"
 if [ $FILEEXT = "EPUB" ]
@@ -118,6 +124,8 @@ elif [ $FILEEXT = "PDF" ]
   then
   DATE="<"$TELLTAG">"$(echo "$TEXT"|grep  "CreationDate:"|sed "s/CreationDate:[ ]*//")"</"$TELLTAG">"
 fi
+echo $DATE
+#-----------Busco el icono de los EPUB
 if [ $FILEEXT = "EPUB" ]
   then
   ICOFILE=$(mktemp)
@@ -136,8 +144,24 @@ if [ $FILEEXT = "EPUB" ]
     echo "<icon>"$ICOFILE"</icon>"
   fi
 fi
-echo $DATE
-echo "<carpe>"$(dirname $1)"</carpe>"
+#-----------LEo contenido de zip y rar
+# if [ $FILEEXT = "EPUB" ]
+case $FILEEXT in
+  "ZIP")
+      echo "<notas>"
+      zip -sf "$EPUBFILE"|sed "s/$/\&lt;br\/>/"
+      echo "</notas>"
+      ;;
+  "RAR")
+      echo "<notas>"
+      echo "Archive contains:&lt;br/>"
+      rar l "$EPUBFILE" |sed -n "/------/,/------/p"|sed "s/$/\&lt;br\/>/"
+      echo "</notas>"
+      ;;
+esac
+#-----------Pongo la carpeta absoluta (machine dependent)
+echo "<carpe>"$(dirname "$1")"</carpe>"
+#-----------Cierro
 echo "</entry>"
 echo "<images/></collection></tellico>"
 # echo $FILEEXT $EPUBFILE $AUTOR>> /home/vlad/mis_programas/tellico_up/salida
