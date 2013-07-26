@@ -1,4 +1,12 @@
 #!/bin/bash
+#----------------
+#Lee información de archivos PDF, EPUB, ZIP y RAR e imprime una en formato compatible con tellico.
+#necesita:
+#	EPUB: unzip, imagemagick(puede funcionar sin esto);
+#	PDF: pdfinfo;
+#	ZIP: zip;
+#	RAR: rar.
+#----------------
 # PREAMBLE="<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE tellico PUBLIC '-//Robby Stephenson/DTD Tellico V11.0//EN' 'http://periapsis.org/tellico/dtd/v11/tellico.dtd'><tellico xmlns=\"http://periapsis.org/tellico/\" syntaxVersion=\"11\">"
 # echo $PREAMBLE
 # echo "<entry id=\"0\">"
